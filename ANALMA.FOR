@@ -14,7 +14,7 @@ C Location data (degrees), UTC hour
 C
 	DO 75 M=1,12
 	DO 85 D=1,MONTHS(M)
-	JD=JDATE(M,D)
+	JD=JDATE(2020,M,D)
 	ST=UTC2S(LON,JD,HR,0)
 	SRA=SUNRA(JD)
 	SDC=SUNDC(JD)
