@@ -9,6 +9,7 @@ Main programs:
 * `ANALMA` : Compute the right ascension, declination, noon elevation, and noon azimuth of the sun 
 * `STAREL` : Compute star elevations at a specified time
 * `MOONEL` : Compute the elevation of the moon at a specified time
+* `JUPEL`  : Compute the elevation of Jupiter at a specified time
 * `SUNPOS` : Compute the location of the sun at a specified time
 
 References:
