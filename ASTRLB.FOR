@@ -178,3 +178,73 @@ C Final output in equatorial coordinates
 	MOONRA=ATAN2(YE,XE)*24/6.28319
 	MOONDC=ATAN2(ZE,SQRT(XE*XE+YE*YE))*180/PI
 	END
+C
+	SUBROUTINE JUPPOS(D,JUPRA,JUPDC)
+C Compute the right ascension (hours) and declination (degrees)
+C of Jupiter for Julian day D
+	REAL JUPRA,JUPDC
+	REAL D
+	REAL NN,II,WW,AA,EE,MM,PI
+	REAL E,XV,YV,R
+	REAL XH,YH,ZH
+	REAL XG,YG,ZG
+        REAL LATECL,LONECL
+	REAL EES,MMS,WWS
+	REAL ES,XVS,YVS,VS,RS,LONSUN,XS,YS
+	REAL ECL
+	REAL XE,YE,ZE
+	PI=3.14159
+C Orbital elements of Jupiter (about the sun)
+C NN = longitude of ascending node (radians)
+C II = inclination to the ecliptic (radians)
+C WW = Argument of perihelion (radians)
+C AA = mean distance to the sun (AU)
+C EE = eccentricity (dimensionless)
+C MM = Mean anomaly (radians)
+	NN=(100.4542+2.76854E-5*D)*PI/180
+	II=(1.3030-1.557E-7*D)*PI/180
+	WW=(273.8777+1.64505E-5*D)*PI/180
+	AA=5.20256
+	EE=0.048498+4.469E-9*D
+	MM=(19.8950+0.0830853001*D)*PI/180
+C Jupiter's distance R (AU) from the sun
+C true anomaly V (radians)
+	E=MM+EE*SIN(MM)*(1.0+EE*COS(MM))
+	XV=AA*(COS(E)-EE)
+	YV=AA*SQRT(1.0-EE*EE)*SIN(E)
+	V=ATAN2(YV,XV)
+	R=SQRT(XV*XV+YV*YV)
+C Jupiter's position in space (centered on the sun
+C units in AU)
+	XH=R*(COS(NN)*COS(V+WW)-SIN(NN)*SIN(V+WW)*COS(II))
+	YH=R*(SIN(NN)*COS(V+WW)+COS(NN)*SIN(V+WW)*COS(II))
+	ZH=R*(SIN(V+WW)*SIN(II))
+C Ecliptic coordinates (radians)
+	LONECL=ATAN2(YH,XH)
+	LATECL=ATAN2(ZH,SQRT(XH*XH+YH*YH))
+C Orbital elements of the sun
+	EES=(0.016709-1.151E-9*D)*PI/180
+	MMS=(356.0470+0.9856002585*D)*PI/180
+	WWS=(282.9404+4.70935E-5*D)*PI/180
+C Position of the sun
+	ES=MMS+EES*SIN(MMS)*(1.0+EES*COS(MMS))
+	XVS=COS(ES)-EES
+	YVS=SQRT(1.0-EES*EES)*SIN(ES)
+	VS=ATAN2(YVS,XVS)	
+	RS=SQRT(XVS*XVS+YVS*YVS)
+	LONSUN=VS+WWS
+	XS=RS*COS(LONSUN)
+	YS=RS*SIN(LONSUN)
+C Geocentric coodinates of Jupiter
+	XG=XH+XS
+	YG=YH+YS
+	ZG=ZH
+C Ecliptic coordinates
+	ECL=(23.4393-3.563E-7*D)*PI/180
+	XE=XG
+	YE=YG*COS(ECL)-ZG*SIN(ECL)
+	ZE=YG*SIN(ECL)+ZG*COS(ECL)
+C Final output in equatorial coordinates
+	JUPRA=ATAN2(YE,XE)*24/6.28319
+	JUPDC=ATAN2(ZE,SQRT(XE*XE+YE*YE))*180/PI
+	END
