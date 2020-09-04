@@ -17,7 +17,7 @@ C Compute Julian date
 	JD2=UTC2JD(YEAR,MONTH,DAY,HOUR,MINUTE)
 C Compute Sidereal time
 	ST=UTC2S(LON,JD,HOUR,MINUTE)
-C Compute Moon position
+C Compute Jupiter's position
 	CALL JUPPOS(JD2,SRA,SDC)
 	SEL=RADC2E(LAT,SRA,SDC,ST)
 	TYPE 60, JD2
